@@ -1,0 +1,33 @@
+version: '3.8'
+
+# Service definition
+services:
+  pgAdmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgAdmin
+    volumes:
+      - pgAdminVolume:/var/lib/pgadmin4/storage
+    networks:
+      serviceNetwork:
+        ipv4_address: 192.168.2.200
+    ports:
+      - "6000:80" # port 6000 is less used by other app/services
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "johndoe@mycompany.com" # change with your own email
+      PGADMIN_DEFAULT_PASSWORD: "johndoe123" # change with your own password
+    restart: unless-stopped
+
+# Network definition
+networks:
+  serviceNetwork:
+    name: serviceNetwork
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.2.0/24
+
+# Volume definition
+volumes:
+  pgAdminVolume:
+    name: pgAdminVolume
