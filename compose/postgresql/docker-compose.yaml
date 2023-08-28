@@ -1,0 +1,32 @@
+version: '3.8'
+
+# Service definition
+services:
+  dbPostgre:
+    image: postgres:13.2-alphine # change with your preferred image tag
+    container_name: postgresql
+    volumes:
+      - postgreVolume:/var/lib/postgresql/data
+    networks:
+      serviceNetwork:
+        ipv4_address: 192.168.2.2
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "johndoe123" # change this password for postgres user
+    restart: unless-stopped
+
+# Network definition
+networks:
+  serviceNetwork:
+    name: serviceNetwork
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.2.0/24
+
+# Volume definition
+volumes:
+  postgreVolume:
+    name: postgreVolume
