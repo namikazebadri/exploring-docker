@@ -1,0 +1,26 @@
+version: '3.8'
+
+# Service definition
+services:
+  phpMyAdmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpMyAdmin
+    networks:
+      serviceNetwork:
+        ipv4_address: 192.168.2.101
+    ports:
+      - "6001:80"
+    environment:
+      #PMA_ARBITRARY: 1 # Uncomment this line if you want to specify host when logged in
+      PMA_HOSTS: "192.168.2.3" # Comment this if you want to specify host when logged in
+    restart: unless-stopped
+
+# Network definition
+networks:
+  serviceNetwork:
+    name : serviceNetwork
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.2.0/24
