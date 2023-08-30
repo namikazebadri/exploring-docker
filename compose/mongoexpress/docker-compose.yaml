@@ -1,0 +1,27 @@
+version: '3.8'
+
+# Service definition
+services:
+  mongoExpress:
+    image: mongo-express:latest # change to your preferred image tag
+    container_name: mongoExpress
+    networks:
+      serviceNetwork:
+        ipv4_address: 192.168.2.102
+    ports:
+      - "5002:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: "192.168.2.11" # change to your mongo db ip address
+      ME_CONFIG_MONGODB_ADMINUSERNAME: "johndoe" # change to your preferred admin username
+      ME_CONFIG_MONGODB_ADMINPASSWORD: "johndoe123" # change to your preferred admin password
+    restart: unless-stopped
+
+# Network definition
+networks:
+  serviceNetwork:
+    name: serviceNetwork
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.2.0/24
